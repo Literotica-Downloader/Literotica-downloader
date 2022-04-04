@@ -1,5 +1,5 @@
 # Literotica-downloader
-![](https://github.com/cab-1729/Literotica-downloader/blob/main/fpgrlimg.png?raw=true)
+![](https://github.com/Literotica-downloader/Literotica-downloader/blob/main/fpgrlimg.png?raw=true)
 Bash script that reads a file with URLs of single literotica stories and stores them as PDFs locally.
 
 ## Dependencies
