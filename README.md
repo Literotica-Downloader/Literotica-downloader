@@ -7,6 +7,7 @@ Bash script that reads a file with URLs of single literotica stories and stores 
 + perl-exiftool
 + pdf-poppler-utils
 + bash
++ recode
 + GNU coreutils (```cut```, ```rev```, ```grep```, ```curl```, ```xargs```, ...)
 
 ## Usage
