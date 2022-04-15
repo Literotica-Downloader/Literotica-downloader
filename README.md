@@ -29,10 +29,11 @@ https://www.literotica.com/s/...
 + If a story is multipaged, link to the first page only, in that case all pages will be downloaded into one file.
 + Adds comments at the end of the story (if any).
 + Can be used in conjunction with tor to anonymize.
++ Is POSIX compliant (tested with ```dash```).
 
 ## Disadvantages
 + This script will not sort stories by category, it will just dump them into one folder.
 + This script does not have a help menu or a man page.
 + This script will not throttle based on CPU power or internet connection, the concurrency argument is to be provided manually.
 + This script does not store in any other format, only PDF.
-+ This script is not posix compliant.
++ ~~This script is not posix compliant.~~
