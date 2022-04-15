@@ -25,7 +25,7 @@ https://www.literotica.com/s/...
 ## Capabilities
 + Stores stories as pdf.
 + Works for illustrated stories.
-+ Removes ads and cam links, keeping just the story and related details.
++ Has an inbuilt adblocker. Removes ads and cam links, keeping just the story and related details.
 + If a story is multipaged, link to the first page only, in that case all pages will be downloaded into one file.
 + Adds comments at the end of the story (if any).
 + Can be used in conjunction with tor to anonymize.
