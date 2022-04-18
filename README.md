@@ -30,10 +30,12 @@ https://www.literotica.com/s/...
 + Adds comments at the end of the story (if any).
 + Can be used in conjunction with tor to anonymize.
 + Is POSIX compliant (tested with ```dash```).
++ Include all comments from the story at the end of the pdf.
 
 ## Disadvantages
 + This script will not sort stories by category, it will just dump them into one folder.
 + This script does not have a help menu or a man page.
 + This script will not throttle based on CPU power or internet connection, the concurrency argument is to be provided manually.
 + This script does not store in any other format, only PDF.
++ This script has no inbuilt way to stop the comment from being attached at the end.
 + ~~This script is not posix compliant.~~
