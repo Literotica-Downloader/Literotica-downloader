@@ -36,5 +36,5 @@ https://www.literotica.com/s/...
 + This script does not have a help menu or a man page.
 + This script will not throttle based on CPU power or internet connection, the concurrency argument is to be provided manually.
 + This script does not store in any other format, only PDF.
-+ This script has no inbuilt way to stop the comment from being attached at the end.
++ This script has no inbuilt way to stop the comments from being attached at the end.
 + ~~This script is not posix compliant.~~
