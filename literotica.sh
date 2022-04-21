@@ -34,16 +34,16 @@ xargs -a "$1" -P ${3:-1} -I {} sh -c '
 		set +x
 		content="$(curl $url)"
 		set -x
-		filename=$(echo -n $url | cut -b 30-).pdf
-		get_page $url $filename last_page #get last page
-		pdfs="$pdfs $filename "
-		while [ $pages -gt 1];do #download pages in between
+		lastname=$(echo -n $url | cut -b 30-).pdf
+		get_page $url $lastname last_page #get last page
+		while [ $pages -gt 1 ];do #download pages in between
 			url={}?page=$pages
 			filename=$(echo -n $url | cut -b 30-).pdf
 			get_page $url $filename nonextreme_page
 			pdfs="$pdfs $filename "
 			pages=$((pages-1))
 		done
+		pdfs="$pdfs $lastname "
 		set +x
 		[ $(echo $content | grep -o comments_all) ] && (#if story has comments
 			set -x
