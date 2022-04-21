@@ -29,7 +29,7 @@ https://www.literotica.com/s/...
 + If a story is multipaged, link to the first page only, in that case all pages will be downloaded into one file.
 + Can be used in conjunction with tor to anonymize.
 + Is POSIX compliant (tested with ```dash```).
-+ Include all comments from the story at the end of the pdf.
++ Include all comments and author's bibliography from the story at the end of the pdf.
 
 ## Disadvantages
 + This script will not sort stories by category, it will just dump them into one folder.
