@@ -8,6 +8,7 @@ document.getElementsByClassName("panel e_r e_P")[0].style.display='none';//remov
 document.getElementsByClassName("panel z_r z_R")[0].style.display='none';//remove similar stories box
 document.querySelector('ul.C_fB').style.display='none';//remove explore button
 document.querySelector('.buttons').style.display='none';//remove login and signup
+document.getElementsByClassName('button button--brand button--block aJ_O')[0].click()//click to show author bio
 document.getElementsByClassName("clearfix aE_lt")[0].style.display='none';//remove comment field
 document.getElementsByClassName("be_eB")[0].style.display='none';//remove literotica live ;link
 document.getElementById('mainFooter').style.display='none';//remove footer panel
