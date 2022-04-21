@@ -27,7 +27,6 @@ https://www.literotica.com/s/...
 + Works for illustrated stories.
 + Has an inbuilt adblocker. Removes ads and cam links, keeping just the story and related details.
 + If a story is multipaged, link to the first page only, in that case all pages will be downloaded into one file.
-+ Adds comments at the end of the story (if any).
 + Can be used in conjunction with tor to anonymize.
 + Is POSIX compliant (tested with ```dash```).
 + Include all comments from the story at the end of the pdf.
