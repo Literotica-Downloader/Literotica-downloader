@@ -9,9 +9,9 @@ document.querySelector('.a_a').style.display='none';//remove cams try out
 document.getElementsByClassName('panel bf_r')[0].style.display='none';//remove public beta notice
 document.querySelector('.aa_hv').style.display='none';//remove report button
 document.getElementsByClassName("panel e_r e_N")[0].style.display='none';//remove share box
-document.getElementsByClassName("panel clearfix aF_lY")[0].style.display='none';//remove ratings box
+let ratings=document.getElementsByClassName("panel clearfix aF_lY")[0];if(ratings!==undefined)ratings.style.display='none';//remove ratings box
 document.getElementsByClassName("panel clearfix aG_ml")[0].style.display='none';//remove add to box
-document.getElementsByClassName("panel z_r z_R")[0].style.display='none';//remove similar stories box
+let similar_stories=document.getElementsByClassName("panel z_r z_R")[0];if(similar_stories!==undefined)similar_stories.style.display='none';//remove similar stories box
 document.querySelector('.page__extended > div:nth-child(2)').style.display='none';//remove literotica live link
 document.getElementById('mainFooter').style.display='none';//remove footer panel
-let comments=document.getElementById('comments_block');if(comments!==null){comments.style.display='none';}//remove comments if there (added later)
+let comments=document.getElementById('comments_block');if(comments!==null)comments.style.display='none';//remove comments if there (added later)

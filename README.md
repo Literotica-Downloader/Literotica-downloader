@@ -1,18 +1,17 @@
 # Literotica-downloader
 ![](https://github.com/Literotica-downloader/Literotica-downloader/blob/main/fpgrlimg.png?raw=true)
-Bash script that reads a file with URLs of single literotica stories and stores them as PDFs locally.
+Bash script that reads a file with URLs of single _literotica_ stories and stores them as PDFs locally.
 
 ## Dependencies
 + wkhtmltopdf
 + perl-exiftool
 + pdf-poppler-utils
-+ bash
 + recode
 + GNU coreutils (```cut```, ```rev```, ```grep```, ```curl```, ```xargs```, ...)
 
 ## Usage
 ```
-/path/to/literotica.sh /path/to/url/file /path/to/directory/to/download [ number of stories concurrently (default=1)]
+/path/to/literotica.sh /path/to/url/file /path/to/download/directory [number of stories to download concurrently (default=1)]
 ```
 urlfile should be literotica links separated by newline :
 
@@ -29,7 +28,7 @@ https://www.literotica.com/s/...
 + If a story is multipaged, link to the first page only, in that case all pages will be downloaded into one file.
 + Can be used in conjunction with tor to anonymize.
 + Is POSIX compliant (tested with ```dash```).
-+ Include all comments and author's bibliography from the story at the end of the pdf.
++ Includes all comments from the story at the end of the pdf.
 
 ## Disadvantages
 + This script will not sort stories by category, it will just dump them into one folder.
@@ -37,4 +36,7 @@ https://www.literotica.com/s/...
 + This script will not throttle based on CPU power or internet connection, the concurrency argument is to be provided manually.
 + This script does not store in any other format, only PDF.
 + This script has no inbuilt way to stop the comments from being attached at the end.
++ This script does not work for multi-chaptered stories.
++ This script does not preserve files with the same name. If two stories have the same title, first one is overwritten.
++ This script does not include the author's biography in the file.
 + ~~This script is not posix compliant.~~

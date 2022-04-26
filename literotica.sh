@@ -11,50 +11,59 @@ xargs -a "$1" -P ${3:-1} -I {} sh -c '
 			sleep 2 # failed, wait and try again
 		done
 	}
-	filename=$(echo -n {} | cut -b 30-).pdf
+	storyname=$(echo {} | cut -b 30-)
+	filename="$storyname.pdf"
 	set +x
 	content="$(curl {})"
 	title="$(echo "$content" | grep -o "<title data-rh=\"true\">.*</title>" | cut -b 23- | rev | cut -d - -f 3- | cut -b 2- | rev | recode html...ascii)"
-	pages=$(echo "$content" | grep -o "page=[0-9]\">[0-9]" | wc -l) #number of webpages in story
+	pages=$(echo "$content" | grep -o "page=[0-9]*\">[0-9]*" | tail -n 1 | cut -d ">" -f 2 ) #number of webpages in story
 	set -x
-	[ $pages = 0 ] && (#if single webpage
+	#story pages
+	if [ -z $pages ];then #if single webpage
 		get_page {} $filename single_page
-		set +x
-		[ $(echo $content | grep -o comments_all) ] && (#if story has comments
-			set -x
-			get_page "{}/comments" "comments-$title.pdf" comment_page
-			pdfunite $filename "comments-$title.pdf" "united-$title.pdf"
-			pdftocairo -pdf "united-$title.pdf" "$title.pdf"
-			rm "comments-$title.pdf" "united-$title.pdf" $filename
-		) || (set -x; mv $filename "$title.pdf")
-	) || (#if not download all pages and join
-		get_page {} $filename first_page #get first page
-		pdfs="$filename " #remember pages
-		url={}?page=$((pages+1))
+		pdfs="$filename"
+	else #if not download all pages and join
+		get_page {} first-$storyname.pdf first_page #get first page
+		url={}?page=$pages
 		set +x
 		content="$(curl $url)"
 		set -x
-		lastname=$(echo -n $url | cut -b 30-).pdf
-		get_page $url $lastname last_page #get last page
+		filename="$storyname?page=$pages.pdf"
+		get_page $url $filename last_page #get last page
+		pdfs="$filename " #remember pages
+		pages=$((pages-1))
 		while [ $pages -gt 1 ];do #download pages in between
 			url={}?page=$pages
-			filename=$(echo -n $url | cut -b 30-).pdf
+			filename="$storyname?page=$pages.pdf"
 			get_page $url $filename nonextreme_page
-			pdfs="$pdfs $filename "
+			pdfs="$filename $pdfs"
 			pages=$((pages-1))
 		done
-		pdfs="$pdfs $lastname "
-		set +x
-		[ $(echo $content | grep -o comments_all) ] && (#if story has comments
-			set -x
-			filename=comments-$(echo -n $url | cut -b 30-).pdf
-			get_page "{}/comments" $filename comment_page
-			pdfs="$pdfs $filename"
-		)
+		pdfs="first-$storyname.pdf $pdfs"
+	fi
+	#comment pages
+	set +x
+	if [ $(echo "$content" | grep -o comments_all) ];then #if story has comments
 		set -x
-		pdfunite $pdfs "united-$title.pdf" #join all webpages into single document
-		pdftocairo -pdf "united-$title.pdf" "$title.pdf" #repair xref table
-		rm $pdfs "united-$title.pdf" #remove webpages from disk
-	)
+		filename="comments-$storyname.pdf"
+		get_page "{}/comments" $filename first_comments
+		pdfs="$pdfs $filename"
+		set +x
+		pages=$(curl {}/comments | grep -o "page=[0-9]*\">[0-9]*" | tail -n 1 | cut -d ">" -f 2 ) #number of comment pages
+		set -x
+		if [ -n "$pages" ];then #if more than one comments page
+			while [ $pages -gt 1 ];do #download all comment pages
+				url={}/comments?page=$pages
+				filename="comments-$storyname?page=$pages.pdf"
+				get_page $url $filename next_comments
+				pdfs="$pdfs $filename"
+				pages=$((pages-1))
+			done
+		fi
+	fi
+	set -x
+	pdfunite $pdfs "united-$storyname.pdf" #join all webpages into single document
+	pdftocairo -pdf "united-$storyname.pdf" "$title.pdf" #repair xref table
+	rm $pdfs "united-$storyname.pdf" #remove webpages from disk
 	exiftool -overwrite_original_in_place -Title="$title" -Author={} -Producer="literotica.sh" "$title.pdf" #add url to meta data
 '
