@@ -2,12 +2,19 @@
 set -x #show commands
 sed -i 's/\r//' "$1" #undo Microsoft nonsense
 cd "$2"
+#imports
 script_directory="$(dirname "$0")"
-export script_directory
+export single_page="$(cat $script_directory/single_page.js)"
+export first_page="$(cat $script_directory/first_page.js)"
+export last_page="$(cat $script_directory/last_page.js)"
+export nonextreme_page="$(cat $script_directory/nonextreme_page.js)"
+export first_comments="$(cat $script_directory/first_comments.js)"
+export next_comments="$(cat $script_directory/next_comments.js)"
+#run
 xargs -a "$1" -P ${3:-1} -I {} sh -c '
 	get_page () {
 		until [ -f "$2" ]; do
-			wkhtmltopdf --run-script "$(cat $script_directory/$3.js)" $1 "$2" ||
+			wkhtmltopdf --run-script "$3" $1 "$2" ||
 			sleep 2 # failed, wait and try again
 		done
 	}
@@ -20,22 +27,22 @@ xargs -a "$1" -P ${3:-1} -I {} sh -c '
 	set -x
 	#story pages
 	if [ -z $pages ];then #if single webpage
-		get_page {} $filename single_page
+		get_page {} $filename "$single_page"
 		pdfs="$filename"
 	else #if not download all pages and join
-		get_page {} first-$storyname.pdf first_page #get first page
+		get_page {} first-$storyname.pdf "$first_page" #get first page
 		url={}?page=$pages
 		set +x
 		content="$(curl $url)"
 		set -x
 		filename="$storyname?page=$pages.pdf"
-		get_page $url $filename last_page #get last page
+		get_page $url $filename "$last_page" #get last page
 		pdfs="$filename " #remember pages
 		pages=$((pages-1))
 		while [ $pages -gt 1 ];do #download pages in between
 			url={}?page=$pages
 			filename="$storyname?page=$pages.pdf"
-			get_page $url $filename nonextreme_page
+			get_page $url $filename "$nonextreme_page"
 			pdfs="$filename $pdfs"
 			pages=$((pages-1))
 		done
@@ -46,7 +53,7 @@ xargs -a "$1" -P ${3:-1} -I {} sh -c '
 	if [ $(echo "$content" | grep -o comments_all) ];then #if story has comments
 		set -x
 		filename="comments-$storyname.pdf"
-		get_page "{}/comments" $filename first_comments
+		get_page "{}/comments" $filename "$first_comments"
 		pdfs="$pdfs $filename"
 		set +x
 		pages=$(curl {}/comments | grep -o "page=[0-9]*\">[0-9]*" | tail -n 1 | cut -d ">" -f 2 ) #number of comment pages
@@ -55,7 +62,7 @@ xargs -a "$1" -P ${3:-1} -I {} sh -c '
 			while [ $pages -gt 1 ];do #download all comment pages
 				url={}/comments?page=$pages
 				filename="comments-$storyname?page=$pages.pdf"
-				get_page $url $filename next_comments
+				get_page $url $filename "$next_comments"
 				pdfs="$pdfs $filename"
 				pages=$((pages-1))
 			done
