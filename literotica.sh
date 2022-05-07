@@ -50,24 +50,26 @@ xargs -a "$1" -P ${3:-1} -I {} sh -c '
 	fi
 	#comment pages
 	set +x
-	if [ $(echo "$content" | grep -o comments_all) ];then #if story has comments
-		set -x
-		filename="comments-$storyname.pdf"
-		get_page "{}/comments" $filename "$first_comments"
-		pdfs="$pdfs $filename"
-		set +x
-		pages=$(curl {}/comments | grep -o "page=[0-9]*\">[0-9]*" | tail -n 1 | cut -d ">" -f 2 ) #number of comment pages
-		set -x
-		if [ -n "$pages" ];then #if more than one comments page
-			while [ $pages -gt 1 ];do #download all comment pages
-				url={}/comments?page=$pages
-				filename="comments-$storyname?page=$pages.pdf"
-				get_page $url $filename "$next_comments"
-				pdfs="$pdfs $filename"
-				pages=$((pages-1))
-			done
-		fi
-	fi
+	case "$content" in
+		*comments_all*) #if story has comments
+			set -x
+			filename="comments-$storyname.pdf"
+			get_page "{}/comments" $filename "$first_comments"
+			pdfs="$pdfs $filename"
+			set +x
+			pages=$(curl {}/comments | grep -o "page=[0-9]*\">[0-9]*" | tail -n 1 | cut -d ">" -f 2 ) #number of comment pages
+			set -x
+			if [ -n "$pages" ];then #if more than one comments page
+				while [ $pages -gt 1 ];do #download all comment pages
+					url={}/comments?page=$pages
+					filename="comments-$storyname?page=$pages.pdf"
+					get_page $url $filename "$next_comments"
+					pdfs="$pdfs $filename"
+					pages=$((pages-1))
+				done
+			fi
+			;;
+	esac
 	set -x
 	pdfunite $pdfs "united-$storyname.pdf" #join all webpages into single document
 	pdftocairo -pdf "united-$storyname.pdf" "$title.pdf" #repair xref table
