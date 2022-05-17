@@ -12,6 +12,7 @@ export first_comments="$(cat $script_directory/first_comments.js)"
 export next_comments="$(cat $script_directory/next_comments.js)"
 #run
 xargs -a "$1" -P ${3:-1} -I {} sh -c '
+	set -x #show commands
 	get_page () {
 		until [ -f "$2" ]; do
 			wkhtmltopdf --run-script "$3" $1 "$2" ||
@@ -22,8 +23,8 @@ xargs -a "$1" -P ${3:-1} -I {} sh -c '
 	filename="$storyname.pdf"
 	set +x
 	content="$(curl {})"
-	title="$(echo "$content" | grep -o "<title data-rh=\"true\">.*</title>" | cut -b 23- | rev | cut -d - -f 3- | cut -b 2- | rev | recode html...ascii)"
-	pages=$(echo "$content" | grep -o "page=[0-9]*\">[0-9]*" | tail -n 1 | cut -d ">" -f 2 ) #number of webpages in story
+	title="$(echo "$content" | grep -oP "<title data-rh=\"true\">\K.*(?= - .* - Literotica.com</title>)" | recode html...ascii)"
+	pages=$(echo "$content" | grep -oP "page=[0-9]*\">\K[0-9]*" | tail -n 1) #number of webpages in story
 	set -x
 	#story pages
 	if [ -z $pages ];then #if single webpage
@@ -57,7 +58,7 @@ xargs -a "$1" -P ${3:-1} -I {} sh -c '
 			get_page "{}/comments" $filename "$first_comments"
 			pdfs="$pdfs $filename"
 			set +x
-			pages=$(curl {}/comments | grep -o "page=[0-9]*\">[0-9]*" | tail -n 1 | cut -d ">" -f 2 ) #number of comment pages
+			pages=$(curl {}/comments | grep -oP "page=[0-9]*\">\K[0-9]*" | tail -n 1) #number of comment pages
 			set -x
 			if [ -n "$pages" ];then #if more than one comments page
 				while [ $pages -gt 1 ];do #download all comment pages
@@ -74,5 +75,6 @@ xargs -a "$1" -P ${3:-1} -I {} sh -c '
 	pdfunite $pdfs "united-$storyname.pdf" #join all webpages into single document
 	pdftocairo -pdf "united-$storyname.pdf" "$title.pdf" #repair xref table
 	rm $pdfs "united-$storyname.pdf" #remove webpages from disk
-	exiftool -overwrite_original_in_place -Title="$title" -Author={} -Producer="literotica.sh" "$title.pdf" #add url to meta data
+	set +x
+	exiftool -overwrite_original_in_place -Title="$title" -Author="$(echo "$content" | grep -oP "<div class=\"y_eS\"><a href=\"https://www.literotica.com/stories/memberpage\.php\?uid=[0-9]+\&amp;page=submissions\" class=\"y_eU\" title=\".*?\">\K.*?(?=</a>)" | head -n 1)" -Keywords="$(echo "$content" | grep -oP "<meta data-rh=\"true\" name=\"keywords\" content=\"(Page [0-9]+,)?.*?,.*?,\K.*?(?=\">)")" -Creator={} -Producer="literotica.sh" "$title.pdf" #add url to meta data
 '

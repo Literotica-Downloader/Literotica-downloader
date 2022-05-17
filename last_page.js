@@ -14,4 +14,5 @@ document.getElementsByClassName("panel clearfix aG_ml")[0].style.display='none';
 let similar_stories=document.getElementsByClassName("panel z_r z_R")[0];if(similar_stories!==undefined)similar_stories.style.display='none';//remove similar stories box
 document.querySelector('.page__extended > div:nth-child(2)').style.display='none';//remove literotica live link
 document.getElementById('mainFooter').style.display='none';//remove footer panel
+document.getElementsByClassName('e_r e_P')[0].style.display='none';//remove story tags box
 let comments=document.getElementById('comments_block');if(comments!==null)comments.style.display='none';//remove comments if there (added later)
