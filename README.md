@@ -39,4 +39,5 @@ https://www.literotica.com/s/...
 + This script does not work for multi-chaptered stories.
 + This script does not preserve files with the same name. If two stories have the same title, first one is overwritten.
 + This script does not include the author's biography in the file.
++ This script does not include options to change font size or theme. Original font size and themes are used.
 + ~~This script is not posix compliant.~~
