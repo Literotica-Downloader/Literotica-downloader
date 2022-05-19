@@ -1,7 +1,6 @@
 #!/bin/sh
 set -x #show commands
 sed -i 's/\r//' "$1" #undo Microsoft nonsense
-cd "$2"
 #imports
 script_directory="$(dirname "$0")"
 export single_page="$(cat $script_directory/single_page.js)"
@@ -10,9 +9,11 @@ export last_page="$(cat $script_directory/last_page.js)"
 export nonextreme_page="$(cat $script_directory/nonextreme_page.js)"
 export first_comments="$(cat $script_directory/first_comments.js)"
 export next_comments="$(cat $script_directory/next_comments.js)"
+export dump_directory="$2"
 #run
 xargs -a "$1" -P ${3:-1} -I {} sh -c '
 	set -x #show commands
+	cd "$dump_directory"
 	get_page () {
 		until [ -f "$2" ]; do
 			wkhtmltopdf --run-script "$3" $1 "$2" ||
