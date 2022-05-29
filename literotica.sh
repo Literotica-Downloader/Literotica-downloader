@@ -25,10 +25,15 @@ xargs -a "$1" -P ${3:-1} -I {} sh -c '
 	set +x
 	content="$(curl {})"
 	title="$(echo "$content" | grep -oP "<title data-rh=\"true\">\K.*(?= - .* - Literotica.com</title>)" | recode html...ascii)"
+	category="$(echo "$content" | grep -oP "<title data-rh=\"true\">.* - \K.*(?= - Literotica.com</title>)" | recode html...ascii)"
 	pages=$(echo "$content" | grep -oP "page=[0-9]*\">\K[0-9]*" | tail -n 1) #number of webpages in story
+	rating=$(echo "$content" | grep -oP "<i class=\"icon icon-star aT_ck\"></i><span class=\"aT_cl\">\K[0-5]\.[0-9][0-9]")
 	set -x
+	if [ -n "$rating" ];then #has rating
+		rating="-Rating=$rating" #exiftool argument format
+	fi
 	#story pages
-	if [ -z $pages ];then #if single webpage
+	if [ -z "$pages" ];then #if single webpage
 		get_page {} $filename "$single_page"
 		pdfs="$filename"
 	else #if not download all pages and join
@@ -77,5 +82,5 @@ xargs -a "$1" -P ${3:-1} -I {} sh -c '
 	pdftocairo -pdf "united-$storyname.pdf" "$title.pdf" #repair xref table
 	rm $pdfs "united-$storyname.pdf" #remove webpages from disk
 	set +x
-	exiftool -overwrite_original_in_place -Title="$title" -Author="$(echo "$content" | grep -oP "<div class=\"y_eS\"><a href=\"https://www.literotica.com/stories/memberpage\.php\?uid=[0-9]+\&amp;page=submissions\" class=\"y_eU\" title=\".*?\">\K.*?(?=</a>)" | head -n 1)" -Keywords="$(echo "$content" | grep -oP "<meta data-rh=\"true\" name=\"keywords\" content=\"(Page [0-9]+,)?.*?,.*?,\K.*?(?=\">)")" -Creator={} -Producer="literotica.sh" "$title.pdf" #add url to meta data
+	exiftool -overwrite_original_in_place $rating -Title="$title" -Categories="$category" -Author="$(echo "$content" | grep -oP "<div class=\"y_eS\"><a href=\"https://www.literotica.com/stories/memberpage\.php\?uid=[0-9]+\&amp;page=submissions\" class=\"y_eU\" title=\".*?\">\K.*?(?=</a>)" | head -n 1)" -Keywords="$(echo "$content" | grep -oP "<meta data-rh=\"true\" name=\"keywords\" content=\"(Page [0-9]+,)?.*?,.*?,\K.*?(?=\">)")" -Creator={} -Producer="literotica.sh" "$title.pdf" #add url to meta data
 '
