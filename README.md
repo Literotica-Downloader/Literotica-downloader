@@ -1,6 +1,6 @@
 # Literotica-downloader
 ![](https://github.com/Literotica-downloader/Literotica-downloader/blob/main/fpgrlimg.png?raw=true)
-Shell script that reads a file with URLs of single _literotica_ stories and stores them as PDFs locally.
+Shell script that reads a file with URLs of single _literotica_ stories and stores them as PDFs locally. Authors are often known to delete their stories, it is best to have a local copy.
 
 ## Dependencies
 + wkhtmltopdf
