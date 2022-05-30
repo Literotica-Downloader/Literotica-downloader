@@ -71,9 +71,10 @@ xargs -a "$1" -P ${3:-1} -I {} sh -c '
 					url={}/comments?page=$pages
 					filename="comments-$storyname?page=$pages.pdf"
 					get_page $url $filename "$next_comments"
-					pdfs="$pdfs $filename"
+					comment_pdfs="$filename $comment_pdfs"
 					pages=$((pages-1))
 				done
+			pdfs="$pdfs $comment_pdfs"
 			fi
 			;;
 	esac
