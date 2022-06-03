@@ -9,7 +9,9 @@ document.querySelector('.aa_hv').style.display='none';//remove report button
 document.getElementsByClassName('panel e_r e_N')[0].style.display='none';//remove share box
 let ratings=document.getElementsByClassName('panel clearfix aF_lY')[0];if(ratings!==undefined)ratings.style.display='none';//remove ratings box
 document.getElementsByClassName('panel clearfix aG_ml')[0].style.display='none';//remove add to box
-let similar_stories=document.getElementsByClassName('panel z_r z_R')[0];if(similar_stories!==undefined)similar_stories.style.display='none';//remove similar stories box
+let boxes=document.getElementsByClassName('panel z_r z_R');
+if((similar_stories=boxes[0])!==undefined)similar_stories.style.display='none';//remove similar stories box
+if((series=boxes[1])!==undefined)series.style.display='none';//remove similar stories box
 document.querySelector('.page__extended > div:nth-child(2)').style.display='none';//remove literotica live link
 document.getElementById('mainFooter').style.display='none';//remove footer panel
 document.getElementsByClassName('U_fC')[1].style.display='none';document.getElementsByClassName('C_fC')[1].style.display='none';document.getElementsByClassName('T_fC')[0].style.display='none';

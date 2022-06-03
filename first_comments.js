@@ -5,7 +5,9 @@ document.querySelector('.a_a').style.display='none';//remove cams try out
 document.getElementsByClassName("clearfix u_cS")[0].style.display='none';//remove sort box
 document.getElementsByClassName("w_ew w_mQ")[0].style.display='none';//remove other cam invite
 document.getElementsByClassName("panel e_r e_P")[0].style.display='none';//remove remove topics
-document.getElementsByClassName("panel z_r z_R")[0].style.display='none';//remove similar stories box
+let boxes=document.getElementsByClassName('panel z_r z_R');
+if((similar_stories=boxes[0])!==undefined)similar_stories.style.display='none';//remove similar stories box
+if((series=boxes[1])!==undefined)series.style.display='none';//remove similar stories box
 document.querySelector('ul.C_fB').style.display='none';//remove explore button
 document.querySelector('.buttons').style.display='none';//remove login and signup
 document.getElementsByClassName("clearfix aJ_S aJ_eP")[0].style.display='none';//remove author bio
