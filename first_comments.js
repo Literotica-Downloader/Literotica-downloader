@@ -4,7 +4,7 @@ document.querySelector('.SAAWidget__container').style.display='none';//remove we
 document.querySelector('.a_a').style.display='none';//remove cams try out
 document.getElementsByClassName("clearfix u_cS")[0].style.display='none';//remove sort box
 document.getElementsByClassName("w_ew w_mQ")[0].style.display='none';//remove other cam invite
-document.getElementsByClassName("panel e_r e_P")[0].style.display='none';//remove remove topics
+if((topic_box=document.getElementsByClassName("panel e_r e_P")[0])!==undefined)topic_box.style.display='none';//remove remove topics
 let boxes=document.getElementsByClassName('panel z_r z_R');
 if((similar_stories=boxes[0])!==undefined)similar_stories.style.display='none';//remove similar stories box
 if((series=boxes[1])!==undefined)series.style.display='none';//remove similar stories box
