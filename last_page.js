@@ -16,5 +16,5 @@ if((similar_stories=boxes[0])!==undefined)similar_stories.style.display='none';/
 if((series=boxes[1])!==undefined)series.style.display='none';//remove similar stories box
 document.querySelector('.page__extended > div:nth-child(2)').style.display='none';//remove literotica live link
 document.getElementById('mainFooter').style.display='none';//remove footer panel
-document.getElementsByClassName('e_r e_P')[0].style.display='none';//remove story tags box
+if((tags_box=document.getElementsByClassName('e_r e_P')[0])!==undefined)tags_box.style.display='none';//remove story tags box
 let comments=document.getElementById('comments_block');if(comments!==null)comments.style.display='none';//remove comments if there (added later)
